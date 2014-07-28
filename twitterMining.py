@@ -10,4 +10,17 @@ auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET,
 
 twitter_api = twitter.Twitter(auth=auth)
 
-print twitter_api
+#trending topics
+
+WORLD_WOE_ID = 1
+US_WOE_ID = 23424977
+
+world_trend = twitter_api.trends.place(_id=WORLD_WOE_ID)
+# us_trends = twitter_api.trends.place(_id=US_WOE_ID)
+
+# print world_trend
+# print
+# print us_trends
+
+tweets = twitter_api.search.tweets( q= 'helo')
+print tweets
