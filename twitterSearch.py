@@ -1,5 +1,8 @@
 import twitter
 import json
+from prettytable import PrettyTable
+
+from collections import Counter
 
 CONSUMER_KEY = 'VyqTPV8n1OvdGYrz7aw03qci7'
 CONSUMER_SECRET = '1aGLspKsVEmVaG7AvkITOzak99iMNUs41lE39Md1RBtNbxraHi'
@@ -39,13 +42,27 @@ hashtags = [ hashtag['text'] for status in statuses for hashtag in status['entit
 
 # computing all words here
 words = [w for t in status_texts for w in t.split() ]
+#
+# print json.dumps(status_texts[0:5], indent=1)
+# print json.dumps(screen_names[0:5], indent=1)
+# print json.dumps(hashtags[0:5], indent=1)
+# print json.dumps(words[0:5], indent=1)
 
-print json.dumps(status_texts[0:5], indent=1)
-print json.dumps(screen_names[0:5], indent=1)
-print json.dumps(hashtags[0:5], indent=1)
-print json.dumps(words[0:5], indent=1)
+
+for item in [words, screen_names, hashtags] :
+  c = Counter(item)
+  print c.most_common()[:10]
+  print
 
 
+for label,data in (('Hashtag' , hashtags) , ('Wooord' , words)):
+  pt = PrettyTable(field_names = [label, 'Count'])
+  c = Counter(data)
+  [ pt.add_row(kv) for kv in c.most_common()[:10] ]
+  pt.align[label], pt.align['Count'] = 'l', 'r'
+  print pt
+  #just done
+  
 
 
 
