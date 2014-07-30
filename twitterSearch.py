@@ -39,10 +39,10 @@ for _ in range(5):
 status_texts = [status['text'] for status in statuses]
 screen_names = [user_mention['screen_name'] for status in statuses for user_mention in status['entities']['user_mentions']]
 hashtags = [ hashtag['text'] for status in statuses for hashtag in status['entities']['hashtags'] ]
-
 # computing all words here
 words = [w for t in status_texts for w in t.split() ]
-#
+
+
 # print json.dumps(status_texts[0:5], indent=1)
 # print json.dumps(screen_names[0:5], indent=1)
 # print json.dumps(hashtags[0:5], indent=1)
@@ -55,14 +55,28 @@ for item in [words, screen_names, hashtags] :
   print
 
 
-for label,data in (('Hashtag' , hashtags) , ('Wooord' , words)):
-  pt = PrettyTable(field_names = [label, 'Count'])
-  c = Counter(data)
-  [ pt.add_row(kv) for kv in c.most_common()[:10] ]
-  pt.align[label], pt.align['Count'] = 'l', 'r'
-  print pt
+# for label,data in (('Hashtag' , hashtags) , ('Wooord' , words)):
+#   pt = PrettyTable(field_names = [label, 'Count'])
+#   c = Counter(data)
+#   [ pt.add_row(kv) for kv in c.most_common()[:10] ]
+#   pt.align[label], pt.align['Count'] = 'l', 'r'
+#   print pt
   #just done
-  
+
+# retweet analysis
+retweets = [(status['retweet_count'] ,
+            status['retweeted_status']['user']['screen_name'],
+            status['text']
+            )
+            for status in statuses
+            if status.has_key('retweeted_status')
+             ]
+
+pt = PrettyTable(field_names = ['count' , 'Screen Name' , 'Text'])
+[ pt.add_row(row) for row in sorted(retweets, reverse=True)[:5]]
+pt.max_width['Text'] = 50
+pt.align = 'l'
+print pt
 
 
 
