@@ -1,6 +1,8 @@
 import twitter
 import json
 from prettytable import PrettyTable
+import matplotlib.pyplot as plt
+import numpy as np
 
 from collections import Counter
 
@@ -14,7 +16,9 @@ auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET,
 
 twitter_api = twitter.Twitter(auth=auth)
 
-q = 'FIFA'
+#ONLY CHANGE CODE AFTER THIS BLOCK FOR TWITTER
+
+q = '#MentionSomeoneImportantForYou'
 count = 100
 
 search_results = twitter_api.search.tweets(q=q , count=count)
@@ -76,9 +80,14 @@ pt = PrettyTable(field_names = ['count' , 'Screen Name' , 'Text'])
 [ pt.add_row(row) for row in sorted(retweets, reverse=True)[:5]]
 pt.max_width['Text'] = 50
 pt.align = 'l'
-print pt
+# print pt
 
+word_counts = sorted(Counter(words).values() , reverse=True)
 
+plt.loglog(word_counts)
+plt.ylabel("Freq")
+plt.xlabel("Word Rank")
+plt.figure()
 
 
 
