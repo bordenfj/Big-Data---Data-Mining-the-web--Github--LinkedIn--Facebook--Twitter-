@@ -13,4 +13,4 @@ url = '%s?fields=%s&access_token=%s' %  (base_url, fields, ACCESS_TOKEN)
 
 content = requests.get(url).json()
 
-print json.dumps(content , indent=3)
+print json.dumps(content , indent=1)
